@@ -54,7 +54,6 @@
       margin-top: 1rem;
     }
   </style>
-  <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
     (function(){
@@ -70,17 +69,21 @@
       const service = document.getElementById('service').value;
       const notes = document.getElementById('notes').value;
 
-      // 1️⃣ Send Email to you
+      // Send Email to YOU only
       emailjs.send('service_56ww48f', 'template_3bx19rw', {
-        name, phone, location, service, notes
+        name: name,
+        phone: phone,
+        location: location,
+        service: service,
+        notes: notes
       }).then(() => {
-        document.getElementById('status').innerText = "Request sent! We'll contact you shortly.";
+        document.getElementById('status').innerText = "Request submitted successfully!";
       }, (err) => {
-        document.getElementById('status').innerText = "Failed to send request. Try again.";
+        document.getElementById('status').innerText = "Failed to submit request. Try again.";
         console.error(err);
       });
 
-      // 2️⃣ Open WhatsApp to your number (forward manually to group)
+      // Optional: send WhatsApp message to you only
       const waMessage = `New AC Request:\nName: ${name}\nPhone: ${phone}\nLocation: ${location}\nService: ${service}\nNotes: ${notes}`;
       const waUrl = `https://wa.me/966570552609?text=${encodeURIComponent(waMessage)}`;
       window.open(waUrl, '_blank');
@@ -93,7 +96,7 @@
 <body>
   <div class="container">
     <h1>AC Services Riyadh</h1>
-    <p>Book your AC maintenance, repair, or installation in 60 seconds.</p>
+    <p>Submit your AC service request and we'll handle it.</p>
     
     <form onsubmit="sendForm(event)">
       <input type="text" id="name" placeholder="Full Name" required>
@@ -107,7 +110,7 @@
         <option value="Emergency">Emergency</option>
       </select>
       <textarea id="notes" placeholder="Additional Notes (Optional)"></textarea>
-      <button type="submit">Book Now</button>
+      <button type="submit">Submit Request</button>
     </form>
     
     <div id="status" class="success"></div>
