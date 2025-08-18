@@ -69,20 +69,6 @@
       const service = document.getElementById('service').value;
       const notes = document.getElementById('notes').value;
 
-      // Send Email to YOU only
-      emailjs.send('service_56ww48f', 'template_3bx19rw', {
-        name: name,
-        phone: phone,
-        location: location,
-        service: service,
-        notes: notes
-      }).then(() => {
-        document.getElementById('status').innerText = "Request submitted successfully!";
-      }, (err) => {
-        document.getElementById('status').innerText = "Failed to submit request. Try again.";
-        console.error(err);
-      });
-
       // Send WhatsApp message to you directly via backend
       const waMessage = `Location: ${location}\nService: ${service}\nNotes: ${notes}`;
       try {
@@ -107,7 +93,30 @@
         console.error('WhatsApp send failed:', err);
       }
 
-      // Reset form
+      // Send email to you via backend
+      try {
+        const emailResponse = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            to: 'mohammadnooralkabbani@gmail.com',
+            subject: 'New AC Service Request',
+            text: `Name: ${name}\nPhone: ${phone}\nLocation: ${location}\nService: ${service}\nNotes: ${notes}`
+          })
+        });
+        const emailResult = await emailResponse.json();
+        if (emailResult.success) {
+          console.log('Email sent:', emailResult.info);
+        } else {
+          console.error('Email send error:', emailResult.error);
+        }
+      } catch (err) {
+        console.error('Email send failed:', err);
+      }
+
+      document.getElementById('status').innerText = "Request submitted successfully!";
       event.target.reset();
     }
   </script>
