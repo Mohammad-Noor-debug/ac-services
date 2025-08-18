@@ -69,31 +69,7 @@
       const service = document.getElementById('service').value;
       const notes = document.getElementById('notes').value;
 
-      // Send WhatsApp message to you directly via backend
-      const waMessage = `Location: ${location}\nService: ${service}\nNotes: ${notes}`;
-      try {
-        const response = await fetch('/api/send-whatsapp', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            name,
-            phone,
-            message: waMessage
-          })
-        });
-        const result = await response.json();
-        if (result.success) {
-          console.log('WhatsApp message sent:', result.sid);
-        } else {
-          console.error('WhatsApp send error:', result.error);
-        }
-      } catch (err) {
-        console.error('WhatsApp send failed:', err);
-      }
-
-      // Send email to you via backend
+      // Send email to you via backend ONLY
       try {
         const emailResponse = await fetch('/api/send-email', {
           method: 'POST',
@@ -108,15 +84,17 @@
         });
         const emailResult = await emailResponse.json();
         if (emailResult.success) {
+          document.getElementById('status').innerText = "Request submitted successfully!";
           console.log('Email sent:', emailResult.info);
         } else {
+          document.getElementById('status').innerText = "Failed to submit request. Try again.";
           console.error('Email send error:', emailResult.error);
         }
       } catch (err) {
+        document.getElementById('status').innerText = "Failed to submit request. Try again.";
         console.error('Email send failed:', err);
       }
 
-      document.getElementById('status').innerText = "Request submitted successfully!";
       event.target.reset();
     }
   </script>
