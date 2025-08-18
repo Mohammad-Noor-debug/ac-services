@@ -1,3 +1,7 @@
+import dotenv from "dotenv";
+dotenv.config();
+
+
 // api/send-email.js
 import nodemailer from "nodemailer";
 

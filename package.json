@@ -4,6 +4,7 @@
   "private": true,
   "license": "UNLICENSED",
   "dependencies": {
+    "dotenv": "^17.2.1",
     "twilio": "^4.22.0"
   },
   "engines": {
