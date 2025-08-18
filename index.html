@@ -48,5 +48,72 @@
     <p>We're working hard to launch our new service.<br>
     Please check back soon!</p>
   </div>
+
+  <!--
+  <div class="container">
+    <h1>AC Services Riyadh</h1>
+    <p>Submit your AC service request and we'll handle it.</p>
+    <form onsubmit="sendForm(event)">
+      <input type="text" id="name" placeholder="Full Name" required>
+      <input type="tel" id="phone" placeholder="Phone Number" required>
+      <input type="text" id="location" placeholder="Your Location / District" required>
+      <select id="service" required>
+        <option value="">Select Service</option>
+        <option value="Maintenance">Maintenance</option>
+        <option value="Repair">Repair</option>
+        <option value="Installation">Installation</option>
+        <option value="Emergency">Emergency</option>
+      </select>
+      <textarea id="notes" placeholder="Additional Notes (Optional)"></textarea>
+      <button type="submit">Submit Request</button>
+    </form>
+    <div id="status" class="success"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("67KJg6b3ymaGlIu9v"); // Your EmailJS User ID
+    })();
+
+    async function sendForm(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const location = document.getElementById('location').value;
+      const service = document.getElementById('service').value;
+      const notes = document.getElementById('notes').value;
+
+      // Send email to you via backend ONLY
+      try {
+        const emailResponse = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            to: 'mohammadnooralkabbani@gmail.com',
+            subject: 'New AC Service Request',
+            text: `Name: ${name}\nPhone: ${phone}\nLocation: ${location}\nService: ${service}\nNotes: ${notes}`
+          })
+        });
+        const emailResult = await emailResponse.json();
+        if (emailResult.success) {
+          document.getElementById('status').innerText = "Request submitted successfully!";
+          console.log('Email sent:', emailResult.info);
+        } else {
+          document.getElementById('status').innerText = "Failed to submit request. Try again.";
+          console.error('Email send error:', emailResult.error);
+        }
+      } catch (err) {
+        document.getElementById('status').innerText = "Failed to submit request. Try again.";
+        console.error('Email send failed:', err);
+      }
+
+      event.target.reset();
+    }
+  </script>
+  -->
 </body>
 </html>
