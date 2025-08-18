@@ -1,0 +1,12 @@
+{
+  "name": "ac-on-demand",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "dependencies": {
+    "twilio": "^4.22.0"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
