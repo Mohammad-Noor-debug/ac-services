@@ -60,9 +60,9 @@
       emailjs.init("67KJg6b3ymaGlIu9v"); // Your EmailJS User ID
     })();
 
-    function sendForm(event) {
+    async function sendForm(event) {
       event.preventDefault();
-      
+
       const name = document.getElementById('name').value;
       const phone = document.getElementById('phone').value;
       const location = document.getElementById('location').value;
@@ -83,10 +83,29 @@
         console.error(err);
       });
 
-      // Optional: send WhatsApp message to you only
-      const waMessage = `New AC Request:\nName: ${name}\nPhone: ${phone}\nLocation: ${location}\nService: ${service}\nNotes: ${notes}`;
-      const waUrl = `https://wa.me/966570552609?text=${encodeURIComponent(waMessage)}`;
-      window.open(waUrl, '_blank');
+      // Send WhatsApp message to you directly via backend
+      const waMessage = `Location: ${location}\nService: ${service}\nNotes: ${notes}`;
+      try {
+        const response = await fetch('/api/send-whatsapp', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name,
+            phone,
+            message: waMessage
+          })
+        });
+        const result = await response.json();
+        if (result.success) {
+          console.log('WhatsApp message sent:', result.sid);
+        } else {
+          console.error('WhatsApp send error:', result.error);
+        }
+      } catch (err) {
+        console.error('WhatsApp send failed:', err);
+      }
 
       // Reset form
       event.target.reset();
